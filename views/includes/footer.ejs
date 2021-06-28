@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('.hamburger').classList.toggle('activeham');
+      var burglines = document.querySelectorAll('.burgline');
+      burglines.forEach(item => {
+        item.classList.toggle('activeburgline');
+      });
+      burglines[0].classList.toggle('burgline1');
+      burglines[1].classList.toggle('burgline2');
+      burglines[2].classList.toggle('burgline3');
+      if (document.querySelector('.mynavbar').getAttribute('id') === 'nav-active') {
+        document.querySelector('.mynavbar').setAttribute('id', '');
+      } else {
+        document.querySelector('.mynavbar').setAttribute('id', 'nav-active');
+      }
+    });
+  </script>
+
+</body>
+
+</html>

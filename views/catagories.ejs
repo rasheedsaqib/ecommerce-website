@@ -1,0 +1,63 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <form class="search" action="index.html" method="post">
+        <input type="text" name="search" placeholder="Search product">
+        <button type="button" name="button"> <img src="/images/search.svg" alt=""> </button>
+      </form>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+    </div>
+
+    <section id='catagories'>
+
+      <% if(allcatagories.length === 0){ %>
+        <h4>Nothing found!</h4>
+      <% }
+      if(allcatagories.length !== 0){
+        allcatagories.forEach(onecatagory=>{ %>
+          <div class="flex">
+            <h2><%= onecatagory.name %></h2> 
+            <% if(isAdmin){ %>
+              <form action="/delete-catagory" method="POST">
+                <input type="hidden" name="catagory_id" value="<%= onecatagory._id %>">
+                <a href="/edit-catagory/<%= onecatagory._id %>"> <img src="/images/edit.svg" alt=""> </a>
+                <button type="submit"> <img src="/images/delete.svg" alt=""> </button>
+              </form>
+            <% } %>
+          </div>
+          <div class="all-catagories">
+          <% allsubcatagories.forEach(singlesubcatagory=>{
+            if(JSON.stringify(singlesubcatagory.catagory) === JSON.stringify(onecatagory)){ %>
+              <a href="/catagories/<%= singlesubcatagory._id %>" class="catagory">
+                <img src="/<%= singlesubcatagory.image %>" alt="">
+                <h4><%= singlesubcatagory.name %></h4>
+              </a>
+            <% }
+          }) %>
+        </div>
+        <% });
+      } %>
+
+    </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

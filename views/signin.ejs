@@ -1,0 +1,47 @@
+<%-include('includes/registerHeader.ejs') %>
+
+<div class="main">
+      <div class="imgbox">
+        <img src="images/logo.svg" alt="Logo">
+      </div>
+      <div class="signin">
+        <div class="logo">
+          <img src="images/logo-dark.svg" alt="">
+          <h2>Al-Hadi Mart</h2>
+        </div>
+        <form class="signin-form" action="/signin" method="post">
+          <h3>Signin ></h3>
+          <div class="input-field">
+            <label for="email">Mobile number:</label>
+            <div style="display: flex; justify-content: space-between; margin: 0; padding: 0; width: 102%;">
+              <input style="width: 10%; padding-right: 10px;" type="text" value="+92" readonly>
+              <input style="width: 130%; margin-left: 10px;" value="<%= phone %>" type="text" name="phone" value="<%= phone %>" placeholder="301 1234567" autocomplete="off" required>
+            </div>
+          </div>
+          <div class="input-field">
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="6-15 Characters" autocomplete="off" required>
+          </div>
+          <% if(msg !== ''){ %>
+            <% if(msg !== 'User not verified!'){ %>
+              <p style="color: <%= msgColor %>" class="error"><%= msg %></p>
+            <% } %>
+            <% if(msg === 'User not verified!'){ %>
+              <p style="color: <%= msgColor %>" class="error">User not verified! <a style="color: brown; text-decoration: underline;" href="/sendVerificationCode?phone=<%= phone %>">Verify now</a> </p>
+            <% } %>
+          <% } %>
+          <button type="submit" name="button">Signin</button>
+
+          <p>-------- or --------</p>
+
+          <button type="button" id="google" name="button">Signin with Google</button>
+
+        </form>
+        <p>Don't have an account? <a href="/signup">Signup</a>
+        <br>Did you forget password? <a href="/forget">Reset</a> </p>
+
+      </div>
+    </div>
+
+  </body>
+</html>

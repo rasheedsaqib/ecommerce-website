@@ -1,0 +1,65 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Welocome <%= name %>!</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <h2>All Admins</h2>
+
+        <% if(admins.length === 0){ %>
+            <h3>No admins!</h3>
+          <% }if(admins.length !== 0){ %>
+            <table>
+              <thead>
+                <tr class="adminTable">
+                  <th>Email</th>
+                  <th>Can manage products</th>
+                  <th>Can manage users</th>
+                  <th>Can manage orders</th>
+                  <th>Update info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% admins.forEach((admin, index)=>{ %>
+                  <tr class="adminTable">
+                    <td><%= admin.email  %></td>
+                    <td><%= admin.canManageProduct %></td>
+                    <td><%= admin.canManageUser %></td>
+                    <td><%= admin.canManageOrder %></td>
+                    <td><form class="signin-form" action="/deleteAdmin" method="POST">
+                      <input type="hidden" name="id" value="<%= admin._id %>">
+                      <button style="margin: 0; background: none; border: none; color: #5443c3; font-size: 1rem;" type="submit">Delete admin</button>
+                    </form></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          <% } %>
+  
+      </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

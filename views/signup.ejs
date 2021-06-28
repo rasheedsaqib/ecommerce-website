@@ -1,0 +1,49 @@
+<%- include('includes/registerHeader.ejs') %>
+
+    <div class="main">
+      <div class="imgbox">
+        <img src="images/logo.svg" alt="Logo">
+      </div>
+      <div class="signin">
+        <div class="logo">
+          <img src="images/logo-dark.svg" alt="">
+          <h2>Al-Hadi Mart</h2>
+        </div>
+        <form class="signin-form" action="/signup" method="POST">
+          <h3>Signup ></h3>
+          <div class="input-field">
+            <label for="name">Name:</label>
+            <input type="text" name="name" value="<%= name %>" placeholder="John Doe" autocomplete="off" required>
+          </div>
+          <div class="input-field">
+            <label for="email">Email:</label>
+            <input type="text" name="email" value="<%= email %>" placeholder="john@web.com" autocomplete="off" required>
+          </div>
+          <div class="input-field">
+            <label for="phone">Mobile number:</label>
+            <div style="display: flex; justify-content: space-between; margin: 0; padding: 0; width: 102%;">
+              <input style="width: 10%; padding-right: 10px;" type="text" value="+92" readonly>
+              <input style="width: 130%; margin-left: 10px;" type="text" name="phone" value="<%= phone %>" placeholder="301 1234567" autocomplete="off" required>
+            </div>
+          </div>
+          <div class="input-field">
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="6-15 Characters" autocomplete="off" required>
+          </div>
+          <div class="input-field">
+            <label for="rep-password">Confirm Password:</label>
+            <input type="password" name="repPassword" placeholder="6-15 Characters" autocomplete="off" required>
+          </div>
+          <% if(msg !== ''){ %>
+            <p style="color: <%= msgColor %>" class="error"><%= msg %></p>
+          <% } %>
+          <button type="submit" name="button">Signup</button>
+
+        </form>
+  
+        <p>Already have an account? <a href="/signin">Signin</a>
+        <br>Did you forget password? <a href="/forget">Reset</a> </p>
+      </div>
+    </div>
+    
+<%- include('includes/registerFooter.ejs') %>

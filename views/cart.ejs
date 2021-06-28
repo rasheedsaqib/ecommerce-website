@@ -1,0 +1,112 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <a href=""></a>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+    </div>
+
+    <section id='products'>
+
+      <div class="top-content">
+        <h2>My Cart</h2>
+        <% if(cartItems.length !== 0){ %>
+          <% if(address1 || address2){ %>
+            <p>Checkout</p>
+          <% } %>
+          <% if(!(address1 || address2)){ %>
+            <a href="/profile?msg=Update your address!&msgColor=brown">Checkout</a>
+          <% } %>
+        <% } %>
+      </div>
+
+      <% if(cartItems.length === 0){ %>
+        <h4>Nothing found in cart.</h4>
+      <%}
+      if(cartItems.length !== 0){ %>
+        <div class="all-products">
+          <% cartItems.forEach((item, index)=>{ %>
+            <div class="product">
+              <img class="prod-img" src="/<%= item.product.image %>" alt="">
+              <form action="/deletecartItem" method="POST">
+                <input type="hidden" name="itemindex" value="<%= index %>">
+                <button class="delBtn" type="submit"><img class="cart_img" src="/images/delete.svg" alt=""></button>
+              </form>
+              <div class="cart-title">
+                <h3><%= item.product.name %></h3>
+              </div>
+              <h4 class="total-items">Quantity: <%= item.quantity %></h4>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+
+    </section>
+
+    <% var totalPrice = 0
+      cartItems.forEach(item=>{
+        totalPrice = totalPrice+ ( (item.product.price - item.product.price*(item.product.sale/100)) * item.quantity)
+      }) %>
+
+    <div class="popup">
+      <div class="popup-data">
+        <h2>Total Payments:</h2>
+        <p>Rs. <%= Math.floor(totalPrice) %></p>
+        <form class="signin-form" action="/order" method="POST">
+          <div class="input-field">
+            <label for="address">Select Address:</label>
+            <select style="color: #222222;" name="address" required>
+              <option value="none">Select Address</option>
+              <option value="<%= address1 %>"><%= address1 %></option>
+              <option value="<%= address2 %>"><%= address2 %></option>
+            </select>
+          </div>
+          <% if(msg){ %>
+            <p style="color: brown; margin: 0; padding: 0;"><%= msg %></p>
+          <% } %>
+          <button type="submit">Place order</button>
+        </form>
+        <img src="/images/cross.svg" alt="">
+      </div>
+    </div>
+
+  </div>
+
+  <% if(msg){ %>
+    <script>
+      document.querySelector('.popup').style.display = 'flex';
+    </script>
+  <% } %>
+
+  <% if(cartItems.length !== 0){ %>
+    <script>
+    
+      document.querySelector('.top-content p').addEventListener('click', ()=>{
+        document.querySelector('.popup').style.display = 'flex';
+      });
+      
+      document.querySelector('.popup img').addEventListener('click', ()=>{
+        document.querySelector('.popup').style.display = 'none';
+      });
+  
+    </script>
+  <% } %>
+
+  <%- include('includes/footer.ejs') %>

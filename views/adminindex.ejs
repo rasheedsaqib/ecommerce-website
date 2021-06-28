@@ -1,0 +1,54 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Welocome <%= name %>!</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <div class="all-admin-rights">
+          <% if(canManageProduct){ %>
+            <a href="/addproduct" class="admin-right">
+              <img src="/images/addproduct.svg" alt="">
+              <h2>Add product</h2>
+            </a>
+          <% }
+          if(canManageUser){ %>
+            <a href="/adduser" class="admin-right">
+              <img src="/images/adduser.svg" alt="">
+              <h2>Add users</h2>
+            </a>
+          <% }
+          if(canManageOrder){ %>
+            <a href="/order" class="admin-right">
+              <img src="/images/cart-blue.svg" alt="">
+              <h2>Manage Orders</h2>
+          </a>
+          <% } %>
+          </div>
+  
+      </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

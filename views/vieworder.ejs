@@ -1,0 +1,171 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2></h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+    </div>
+
+    <section id='products'>
+
+        <div class="top-content">
+            <h2>Order details</h2>
+            <% if(isAdmin && canManageOrder){ %>
+                <form action="/view-order" method="POST">
+                    <input type="hidden" name="id" value="<%= order._id %>">
+                    <%
+                    if(order.status === 'Placed'){ %>
+                        <button type="submit">Pack</button>
+                    <% }
+                    if(order.status === 'Packed'){ %>
+                        <button type="submit">Start delievering</button>
+                    <% }
+                    if(order.status === 'Being delievered'){ %>
+                        <button type="submit">Deliever now</button>
+                    <% }
+                    if(order.status === 'Delievered'){ %>
+                        <n></n>
+                    <% } %>
+                </form>
+            <% }
+            if(order.status === 'Delievered' && !isAdmin){ %>
+                <button class="rate">Rate</button>
+            <% } %>
+
+        </div>
+
+        <h3 style="margin: 0%; padding: 0%; color: #5443c3;">Order id: </h3>
+        <p style="margin: 0%; padding: 0%;"><%= order._id %></p>
+
+        <h3 style="color: #5443c3;">User details</h3>
+        <div class="user-details">
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Name: </h4>
+                <p style="margin: 0%; padding: 0%;"><%= order.cart.user.name %></p>
+            </div>
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Email: </h4>
+                <p style="margin: 0%; padding: 0%;"><%= order.cart.user.email %></p>
+            </div>
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Phone: </h4>
+                <p style="margin: 0%; padding: 0%;"><%= order.cart.user.phone %></p>
+            </div>
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Address: </h4>
+                <p style="margin: 0%; padding: 0%;"><%= order.address %></p>
+            </div>
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Total Price: </h4>
+                <p style="margin: 0%; padding: 0%;">Rs. <%= order.totalPrice %></p>
+            </div>
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Delievery Charges: </h4>
+                <p style="margin: 0%; padding: 0%;">Rs. <%= order.delieveryCharges %></p>
+            </div>
+            <div>
+                <h4 style="margin: 0%; padding: 0%;">Status: </h4>
+                <p style="margin: 0%; padding: 0%;"><%= order.status %></p>
+            </div>
+        </div>
+
+        <br>
+
+        <h3 style="color: #5443c3;">Products Details:</h3>
+
+        <div class="products-details">
+            <% order.cart.items.forEach((item,i)=>{ %>
+                <div>
+                    <div>
+                        <h4 style="margin: 0%; padding: 0%;">Product <%= i+1 %>: </h4>
+                        <p style="margin: 0%; padding: 0%;"><%= item.product.name %> <a href="/product/<%= item.product.id %>">Vew product</a> </p>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0%; padding: 0%;">Extra details: </h4>
+                        <% if(item.extraDetail){ %>
+                            <p style="margin: 0%; padding: 0%;"><%= item.extraDetail %> </p>
+                        <% }
+                        if(!item.extraDetail){ %>
+                            <p style="margin: 0%; padding: 0%;">No extra details.</p>
+                        <% } %>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0%; padding: 0%;">Quantity: </h4>
+                        <p style="margin: 0%; padding: 0%;"><%= item.quantity %> </p>
+                    </div>
+                    <br>
+                </div>
+            <% }) %>
+        </div>
+
+    </section>
+
+    <div class="popup">
+        <div class="popup-data">
+            <h2>Rate this order:</h2>
+            <form style="text-align: left;" class="signin-form" action="/rate-order" method="POST">
+                <input type="hidden" name="order_id" value="<%= order._id %>">
+                <p style="margin: 0;padding: 0;">Rate this order out of 5:</p>
+                <p style="margin: 0;padding: 0; font-size: 24px;" class="rate-stars" style="cursor: pointer;">
+                    <span class="fa fa-star not-checked"></span>
+                    <span class="fa fa-star not-checked"></span>
+                    <span class="fa fa-star not-checked"></span>
+                    <span class="fa fa-star not-checked"></span>
+                    <span class="fa fa-star not-checked"></span>
+                </p>
+                <p style="margin: 0;padding: 0;" class="rate-text">0/5</p>
+                <input class="rate-val" type="hidden" name="rate_value" value="0">
+                <button type="submit">Rate</button>
+            </form>
+            <img src="/images/cross.svg" alt="">
+        </div>
+      </div>
+
+  </div>
+
+  <script>
+    
+    document.querySelector('.rate').addEventListener('click', ()=>{
+      document.querySelector('.popup').style.display = 'flex';
+    });
+    
+    document.querySelector('.popup img').addEventListener('click', ()=>{
+      document.querySelector('.popup').style.display = 'none';
+    });
+
+    var allStars = document.querySelectorAll('.rate-stars span');
+
+    allStars.forEach((element, index) => {
+        element.addEventListener('click', ()=>{
+            for(var i=0; i<allStars.length; i++){
+                allStars[i].classList.add('not-checked');
+            }
+            for(var i=0; i<index+1; i++){
+                allStars[i].classList.remove('not-checked');
+                allStars[i].classList.add('checked');
+            }
+            document.querySelector('.rate-text').innerHTML = (index+1)+'/5';
+            document.querySelector('.rate-val').setAttribute('value',index+1);
+        });
+    });
+
+  </script>
+
+  <%- include('includes/footer.ejs') %>

@@ -1,0 +1,128 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Welocome <%= name %>!</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <h2>Add new product</h2>
+  
+        <form class="signin-form" action="/addproduct" method="POST" enctype="multipart/form-data">
+            <div class="input-field">
+                <label for="productname">Product Name:</label>
+                <input type="text" name="productname" value="<%= productname %>" placeholder="10-15 Characters" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="image">Image:</label>
+              <input type="file" name="image" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+                <label for="price">Price:</label>
+                <input type="number" name="price" value="<%= price %>" placeholder="In Rupees" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="sale">Sale:</label>
+              <input type="number" name="sale" value="0" placeholder="In %" step="0.01" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+                <label for="colors">Colors:</label>
+                <input type="text" name="colors" placeholder="Comma Seprated colors(Optional)" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <label for="sizes">Sizes:</label>
+                <input type="text" name="sizes" placeholder="Coma Seprated Sizes (Optional)" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <label for="details">Details:</label>
+                <input type="text" name="details" value="<%= details %>" placeholder="Other details of product" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="details">Stock:</label>
+              <input type="number" name="stock" placeholder="In number" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+                <label for="subcatagory">Sub Catagory:</label>
+                <select style="color: #222222;" name="subcatagory" required>
+                    <option style='color: #222222;' value="none">Select sub catagory</option>
+                    <% allsubcatagories.forEach(item=>{ %>
+                        <option value="<%= item._id %>"><%= item.name %> > <%= item.catagory.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <% if(prodMsg !== ''){ %>
+              <p style="color: <%= msgColor %>" class="error"><%= prodMsg %></p>
+            <% } %>
+            <button type="submit" name="button">Add Product</button>
+        </form>
+
+        <br>
+        
+        <h2>Add sub catagory</h2>
+
+        <form class="signin-form" action="/addsubcatagory" method="POST" enctype="multipart/form-data">
+            <div class="input-field">
+                <label for="details">Name:</label>
+                <input type="text" name="subcatagoryname" value="<%= subcatagoryname %>" placeholder="10-15 Characters" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="image">Image:</label>
+              <input type="file" name="image" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+                <label for="catagory">Catagory:</label>
+                <select style="color: #222222;" name="catagory" required>
+                    <option value="none">Select catagory</option>
+                    <% allCatagories.forEach(item=>{ %>
+                        <option value="<%= item._id %>"><%= item.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <% if(subMsg !== ''){ %>
+                <p style="color: <%= msgColor %>" class="error"><%= subMsg %></p>
+            <% } %>
+            <button type="submit" name="button">Add Sub Catagory</button>
+        </form>
+
+        <br>
+
+        <h2>Add catagory</h2>
+
+        <form class="signin-form" action="/addcatagory" method="POST">
+            <div class="input-field">
+                <label for="details">Name:</label>
+                <input type="text" name="catagoryname" value="<%= catagoryname %>" placeholder="10-15 Characters" autocomplete="off" required>
+            </div>
+            <% if(catMsg !== ''){ %>
+                <p style="color: <%= msgColor %>" class="error"><%= catMsg %></p>
+            <% } %>
+            <button type="submit" name="button">Add Catagory</button>
+        </form>
+
+        <br>
+  
+      </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

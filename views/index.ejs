@@ -1,0 +1,82 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <form class="search" action="index.html" method="post">
+        <input type="text" name="search" placeholder="Search product">
+        <button type="button" name="button"> <img src="/images/search.svg" alt=""> </button>
+      </form>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+      <div class="flex">
+        <h2><%= title %> </h2>
+        <% if(isAdmin && title !== 'All Products'){ %>
+          <form action="/delete-subcatagory" method="POST">
+            <input type="hidden" name="subcatagory_id" value="<%= subcatagory._id %>">
+            <a href="/edit-subcatagory/<%= subcatagory._id %>"> <img src="/images/edit.svg" alt=""> </a>
+            <button type="submit"> <img src="/images/delete.svg" alt=""> </button>
+          </form>
+        <% } %>
+      </div>
+
+      <% if(products.length === 0){ %>
+        <h4>No product was found!</h4>
+      <% } %>
+      <% if(products.length !== 0){ %>
+
+        <div class="all-products">
+          <% products.forEach(item=>{ %>
+            <a href="/product/<%= item._id %>" class="product">
+              <img class="prod-img" src="/<%= item.image %>" alt="">
+              <% if(!isAdmin){ %>
+                <img class="cart_img" src="/images/cart_dark.svg" alt="">
+              <% } %>
+              <div class="title">
+                <h3><%= item.name %></h3>
+                <p>
+                  <% for(var i=0; i<(item.rating); i++){ %>
+                    <span class="fa fa-star checked"></span>
+                  <% } %>
+                  <% for(var i=0; i<(5 - item.rating); i++){ %>
+                    <span class="fa fa-star not-checked"></span>
+                  <% } %>
+                  (<%= item.rating %>/5)
+                </p>
+              </div>
+              <% if(item.sale){ %>
+                <h5 class="ac-price">Rs .<%= item.price %></h5>
+                <img src="/images/sale.png" class="sale-img" alt="">
+              <% } %>
+              <h4 class="price">Rs. <%= Math.floor(item.price - item.price*(item.sale/100)) %></h4>
+            </a>
+          <% }) %>
+        </div>
+        
+      <% } %>
+
+    </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

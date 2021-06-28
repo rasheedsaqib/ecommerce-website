@@ -1,0 +1,61 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>My Profile</h2>
+      </form>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <form class="signin-form update-form" action="/profile" method="POST">
+            <div class="input-field">
+              <label for="name">Name:</label>
+              <input type="text" name="name" value="<%= name %>" placeholder="John Doe" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="email">Email:</label>
+              <input type="text" name="email" value="<%= email %>" placeholder="john@web.com" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="email">Phone:</label>
+              <input type="text" name="phone" value="<%= phone %>" placeholder="0301 1234567" autocomplete="off" required readonly>
+            </div>
+            <div class="input-field">
+              <label for="email">Address 1:</label>
+              <input type="text" name="address1" value="<%= address1 %>" placeholder="Your address" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="email">Address 2:</label>
+              <input type="text" name="address2" value="<%= address2 %>" placeholder="Your address" autocomplete="off" required>
+            </div>
+            <% if(msg !== ''){ %>
+              <p style="color: <%= msgColor %>" class="error"><%= msg %></p>
+            <% } %>
+            <button style="width: 100px;" type="submit" name="button">Update</button>
+        </form>
+
+    </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

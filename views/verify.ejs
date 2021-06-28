@@ -1,0 +1,23 @@
+<%- include('includes/registerHeader.ejs') %>
+
+    <div class="main">
+      <div class="imgbox">
+        <img src="images/logo.svg" alt="Logo">
+      </div>
+      <div class="signin">
+        <div class="logo">
+          <img src="images/logo-dark.svg" alt="">
+          <h2>Al-Hadi Mart</h2>
+        </div>
+        <form class="signin-form" action="<%= action %>" method="post">
+          <h3>Verify ></h3>
+          <div class="input-field">
+            <label for="code">Verification code sent to your phone:</label>
+            <input type="text" name="code" placeholder="123456" autocomplete="off" required>
+          </div>
+          <button type="submit" name="button">Verify</button>
+        </form>
+      </div>
+    </div>
+
+    <%- include('includes/registerFooter.ejs') %>

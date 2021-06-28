@@ -1,0 +1,86 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Welocome <%= name %>!</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <h2>Edit product</h2>
+  
+        <form class="signin-form" action="/edit-product" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<%= id %>">
+            <div class="input-field">
+                <label for="productname">Product Name:</label>
+                <input type="text" name="productname" value="<%= productname %>" placeholder="10-15 Characters" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="image">Image:</label>
+              <input type="file" name="image" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <label for="price">Price:</label>
+                <input type="number" name="price" value="<%= price %>" placeholder="In Rupees" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="sale">Sale:</label>
+              <input type="number" name="sale" value="<%= sale %>" placeholder="In %" step="0.01" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+                <label for="colors">Colors:</label>
+                <input type="text" name="colors" value="<%= colors %>" placeholder="Comma Seprated colors(Optional)" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <label for="sizes">Sizes:</label>
+                <input type="text" name="sizes" value="<%= sizes %>" placeholder="Coma Seprated Sizes (Optional)" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <label for="details">Details:</label>
+                <input type="text" name="details" value="<%= details %>" placeholder="Other details of product" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="details">Stock:</label>
+              <input type="number" name="stock" value="<%= stock %>" placeholder="In number" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+                <label for="subcatagory">Sub Catagory:</label>
+                <select style="color: #222222;" name="subcatagory">
+                    <option style='color: #222222;' value="none">Select sub catagory</option>
+                    <% allsubcatagories.forEach(item=>{ %>
+                        <option value="<%= item._id %>"><%= item.name %> > <%= item.catagory.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <% if(prodMsg !== ''){ %>
+              <p style="color: <%= msgColor %>" class="error"><%= prodMsg %></p>
+            <% } %>
+            <button type="submit" name="button">Edit Product</button>
+        </form>
+
+        <br>
+  
+      </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

@@ -1,0 +1,49 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Welocome <%= name %>!</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <h2>Edit catagory</h2>
+  
+        <form class="signin-form" action="/edit-catagory" method="POST">
+            <input type="hidden" name="id" value="<%= catagory._id %>">
+            <div class="input-field">
+                <label for="details">Name:</label>
+                <input type="text" name="catagoryname" value="<%= catagory.name %>" placeholder="10-15 Characters" autocomplete="off" required>
+            </div>
+            <% if(catMsg !== ''){ %>
+                <p style="color: <%= msgColor %>" class="error"><%= catMsg %></p>
+            <% } %>
+            <button type="submit" name="button">Edit catagory</button>
+        </form>
+
+        <br>
+  
+      </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

@@ -1,0 +1,245 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <a href="/product" class="back"><</a>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+    </div>
+
+    <section id='signle-product'>
+
+      <div class="display">
+        <div class="display-pics">
+          <div class="top-img">
+            <% if(product.sale){ %>
+              <h4 class="sale-text"><%= product.sale %>% Off</h4>
+              <img src="/images/sale.png" class="sale-img" alt="">
+            <% } %>
+            <img src="/<%= product.image %>" alt="">
+          </div>
+        </div>
+        <div class="display-details">
+          <h1 class="title"><%= product.name %></h1>
+          <p class="type"><%= product.subcatagory.catagory.name %></p>
+          <p>
+            <% for(var i=0; i<(product.rating); i++){ %>
+              <span class="fa fa-star checked"></span>
+            <% } %>
+            <% for(var i=0; i<(5 - product.rating); i++){ %>
+              <span class="fa fa-star not-checked"></span>
+            <% } %>
+            (<%= product.rating %>/5)
+          </p>
+          <% if(product.sale){ %>
+            <p>Rs. <%= Math.floor(product.price - product.price*(product.sale/100)) %> </p> <h5 class="price-sale">Rs .<%= product.price %></h5>
+          <% } %>
+          <% if(!product.sale){ %>
+            <p>Rs. <%= product.price %> </p>
+          <% } %>
+          <% if(product.colors[0]){ %>
+            <h5>Color</h5>
+            <div class="colors">
+              <p style="background: <%= product.colors[0] %>" class="selected-color color"></p>
+              <% product.colors.forEach((item, i)=>{
+                if(i>0){ %>
+                  <p style="background: <%= product.colors[i] %>" class="color"></p>
+                <% }
+              }) %>
+            </div>
+          <% } %>
+
+          <% if(product.sizes[0]){ %>
+            <h5>Size</h5>
+            <div class="size">
+              <p onclick="minusSize(<%= product.sizes[0] %>)" class="minus">-</p>
+              <p class="size-number"><%= product.sizes[0] %></p>
+              <p onclick="plusSize(<%= product.sizes[product.sizes.length-1] %>)"  class="plus">+</p>
+            </div>
+          <% } %>
+
+          <h5>Quantity</h5>
+          <div class="quantity">
+            <p class="minus">-</p>
+            <p class="quant-number">1</p>
+            <p class="plus">+</p>
+          </div>
+          <h5>Details</h5>
+          <p><%= product.details %></p>
+          <div class="buttons">
+            <% if(isAdmin){ %>
+              <form action="/delete-product" method="POST">
+                <input type="hidden" name="product_id" value="<%= product._id %>">
+                <a href="/edit-product/<%= product._id %>">Edit product</a>
+                <button type="submit">Delete product</button>
+              </form>
+            <% }
+            if(!isAdmin){ 
+              if(product.stock > 0){ %>
+                <form action="/cart" method="POST">
+                  <input type="hidden" name="product_id" value="<%= product._id %>">
+                  <input class="input-quant" type="hidden" name="quantity" value="1">
+                  <input class="color-val" type="hidden" name="color" value="0">
+                  <input class="size-val" type="hidden" name="size" value="<%= product.sizes[0] %>">
+                  <button type="submit" name="button">Add to Cart</button>
+                </form>
+              <% }
+              if(!(product.stock > 0)){ %>
+                <h5 style="color: brown;">This product is currently out of stock!</h5>
+              <% } %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <!-- more product -->
+
+      <h2>More Products</h2>
+
+      <div class="all-products">
+        <% var random = Math.floor(Math.random() * threeproducts.length)
+        var item = threeproducts[random] %>
+        <a href="/product/<%= item._id %>" class="product">
+          <img class="prod-img" src="/<%= item.image %>" alt="">
+          <% if(!isAdmin){ %>
+            <img class="cart_img" src="/images/cart_dark.svg" alt="">
+          <% } %>
+          <div class="title">
+            <h3><%= item.name %></h3>
+            <p>
+              <% for(var i=0; i<(item.rating); i++){ %>
+                <span class="fa fa-star checked"></span>
+              <% } %>
+              <% for(var i=0; i<(5 - item.rating); i++){ %>
+                <span class="fa fa-star not-checked"></span>
+              <% } %>
+              (<%= item.rating %>/5)
+            </p>
+          </div>
+          <% if(item.sale){ %>
+            <h5 class="ac-price">Rs .<%= item.price %></h5>
+            <img src="/images/sale.png" class="sale-img" alt="">
+          <% } %>
+          <h4 class="price">Rs. <%= Math.floor(item.price - item.price*(item.sale/100)) %></h4>
+        </a>
+        <% var random = Math.floor(Math.random() * threeproducts.length)
+        var item = threeproducts[random] %>
+        <a href="/product/<%= item._id %>" class="product">
+          <img class="prod-img" src="/<%= item.image %>" alt="">
+          <% if(!isAdmin){ %>
+            <img class="cart_img" src="/images/cart_dark.svg" alt="">
+          <% } %>
+          <div class="title">
+            <h3><%= item.name %></h3>
+            <p>
+              <% for(var i=0; i<(item.rating); i++){ %>
+                <span class="fa fa-star checked"></span>
+              <% } %>
+              <% for(var i=0; i<(5 - item.rating); i++){ %>
+                <span class="fa fa-star not-checked"></span>
+              <% } %>
+              (<%= item.rating %>/5)
+            </p>
+          </div>
+          <% if(item.sale){ %>
+            <h5 class="ac-price">Rs .<%= item.price %></h5>
+            <img src="/images/sale.png" class="sale-img" alt="">
+          <% } %>
+          <h4 class="price">Rs. <%= Math.floor(item.price - item.price*(item.sale/100)) %></h4>
+        </a>
+        <% var random = Math.floor(Math.random() * threeproducts.length)
+        var item = threeproducts[random] %>
+        <a href="/product/<%= item._id %>" class="product">
+          <img class="prod-img" src="/<%= item.image %>" alt="">
+          <% if(!isAdmin){ %>
+            <img class="cart_img" src="/images/cart_dark.svg" alt="">
+          <% } %>
+          <div class="title">
+            <h3><%= item.name %></h3>
+            <p>
+              <% for(var i=0; i<(item.rating); i++){ %>
+                <span class="fa fa-star checked"></span>
+              <% } %>
+              <% for(var i=0; i<(5 - item.rating); i++){ %>
+                <span class="fa fa-star not-checked"></span>
+              <% } %>
+              (<%= item.rating %>/5)
+            </p>
+          </div>
+          <% if(item.sale){ %>
+            <h5 class="ac-price">Rs .<%= item.price %></h5>
+            <img src="/images/sale.png" class="sale-img" alt="">
+          <% } %>
+          <h4 class="price">Rs. <%= Math.floor(item.price - item.price*(item.sale/100)) %></h4>
+        </a>
+      </div>
+
+    </section>
+
+    <% if(msg !== ""){ %>
+      <div class="msg-error" style="position: fixed; top: 20px; right: 20px; padding: 10px 20px;border-radius: 5px; background: rgba(84, 67, 195, 0.8); display: flex; justify-content: center; align-items: center;">
+        <h3 style="margin: 0; color: #ffffff;"> <%= msg %> </h3>
+        <h2 class="cancel-error-msg" style="margin: 0 0 0 10px; cursor: pointer; color:brown;">X</h2>
+      </div>
+    <% } %>
+
+  </div>
+
+  <script>
+    document.querySelector('.quantity .minus').addEventListener('click', ()=>{
+      if(parseInt(document.querySelector('.quantity .quant-number').innerHTML) > 1){
+        document.querySelector('.quantity .quant-number').innerHTML = parseInt(document.querySelector('.quantity .quant-number').innerHTML) - 1;
+        document.querySelector('.input-quant').setAttribute('value', document.querySelector('.quantity .quant-number').innerHTML);
+      }
+    });
+    document.querySelector('.quantity .plus').addEventListener('click', ()=>{
+      document.querySelector('.quantity .quant-number').innerHTML = parseInt(document.querySelector('.quantity .quant-number').innerHTML) + 1;
+      document.querySelector('.input-quant').setAttribute('value', document.querySelector('.quantity .quant-number').innerHTML);
+    });
+
+    minusSize = (min)=>{
+      if(parseInt(document.querySelector('.size .size-number').innerHTML) > min){
+        document.querySelector('.size .size-number').innerHTML = parseInt(document.querySelector('.size .size-number').innerHTML) - 1;
+        document.querySelector('.size-val').setAttribute('value',document.querySelector('.size .size-number').innerHTML);
+      }
+    }
+    plusSize = (max)=>{
+      if(parseInt(document.querySelector('.size .size-number').innerHTML) < max){
+        document.querySelector('.size .size-number').innerHTML = parseInt(document.querySelector('.size .size-number').innerHTML) + 1;
+        document.querySelector('.size-val').setAttribute('value',document.querySelector('.size .size-number').innerHTML);
+      }
+    }
+
+    document.querySelectorAll('.colors .color').forEach((item, index)=>{
+      item.addEventListener('click', ()=>{
+        document.querySelectorAll('.colors .color').forEach(item=>{
+          item.classList.remove('selected-color');
+        });
+        item.classList.add('selected-color');
+        document.querySelector('.color-val').setAttribute('value', index);
+      });
+    });
+
+    document.querySelector('.cancel-error-msg').addEventListener("click", ()=>{
+      document.querySelector('.msg-error').style.display = "none";
+    });
+
+  </script>
+
+  <%- include('includes/footer.ejs') %>

@@ -1,0 +1,35 @@
+<%- include('includes/registerHeader.ejs') %>
+
+    <div class="main">
+      <div class="imgbox">
+        <img src="/images/logo.svg" alt="Logo">
+      </div>
+      <div class="signin">
+        <div class="logo">
+          <img src="/images/logo-dark.svg" alt="">
+          <h2>Al-Hadi Mart</h2>
+        </div>
+        <form class="signin-form" action="/newPassword" method="post">
+          <h3>Create Password ></h3>
+          <div class="input-field">
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="6-15 Characters" autocomplete="off" required>
+          </div>
+          <div class="input-field">
+            <label for="rep-password">Confirm Password:</label>
+            <input type="password" name="repPassword" placeholder="6-15 Characters" autocomplete="off" required>
+          </div>
+
+          <% if(msg !== ''){ %>
+            <p style="color: <%= msgColor %>" class="error"><%= msg %></p>
+          <% } %>
+
+          <input type="hidden" name="code" value="<%= code %>">
+
+          <button type="submit" name="button">Create password</button>
+
+        </form>
+      </div>
+    </div>
+
+    <%- include('includes/registerFooter.ejs') %>

@@ -1,0 +1,61 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Orders:</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+    </div>
+
+    <section id='products'>
+
+      <% if(allorders.length === 0){ %>
+        <h3>Nothin in the orders!</h3>
+      <% }if(allorders.length !== 0){ %>
+        <table>
+          <thead>
+            <tr class="adminTable">
+              <th>Order no.</th>
+              <th>User</th>
+              <th>No. of Products</th>
+              <th>Status</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% allorders.forEach((order, index)=>{ %>
+              <tr class="adminTable">
+                <td><%= index+1 %></td>
+                <td><%= order.cart.user.name %></td>
+                <td><%= order.cart.items.length %></td>
+                <td><%= order.status %></td>
+                <td>
+                  <a href="/view-order/<%= order._id %>">View</a>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+
+    </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

@@ -1,0 +1,62 @@
+<%- include('includes/header.ejs') %>
+
+  <div class="mycontent">
+
+    <div class="navbar">
+      <div class="hamburger">
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+        <div class="burgline"></div>
+      </div>
+      <h2>Welocome <%= name %>!</h2>
+      <% if(isSignedin){ %>
+        <a class="profile" href="/profile">
+          <img src="/images/man.png" alt="">
+          <h3><%= name %> ></h3>
+        </a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="profile" href="/signin">
+          <img src="/images/man.png" alt="">
+          <h3>Sign in ></h3>
+        </a>
+      <% } %>
+
+    </div>
+
+    <section id='products'>
+
+        <h2>Edit subcatagory</h2>
+  
+        <form class="signin-form" action="/edit-subcatagory" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<%= subcatagory._id %>">
+            <div class="input-field">
+                <label for="details">Name:</label>
+                <input type="text" name="subcatagoryname" value="<%= subcatagory.name %>" placeholder="10-15 Characters" autocomplete="off" required>
+            </div>
+            <div class="input-field">
+              <label for="image">Image:</label>
+              <input type="file" name="image" autocomplete="off">
+            </div>
+            <div class="input-field">
+                <label for="catagory">Catagory:</label>
+                <select style="color: #222222;" name="catagory" required>
+                    <option value="none">Select catagory</option>
+                    <% allCatagories.forEach(item=>{ %>
+                        <option value="<%= item._id %>"><%= item.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <% if(subMsg !== ''){ %>
+              <p style="color: <%= msgColor %>" class="error"><%= subMsg %></p>
+            <% } %>
+            <button type="submit" name="button">Edit subcatagory</button>
+        </form>
+
+        <br>
+  
+      </section>
+
+  </div>
+
+  <%- include('includes/footer.ejs') %>

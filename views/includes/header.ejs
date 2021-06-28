@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Al-Hadi Mart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/indexstyle.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <nav class="mynavbar">
+    <div class="logo">
+      <img src="/images/logo.svg" alt="">
+      <h2>Al-Hadi Mart</h2>
+    </div>
+    <div class="icons">
+        <% if(active === 'home'){ %>
+            <a class="active" href="/"> <img src="/images/home.svg" alt=""> Home</a>
+        <% }
+        if(active !== 'home'){ %>
+            <a href="/"> <img src="/images/home.svg" alt=""> Home</a>
+        <% }
+        if(active === 'catagories'){ %>
+            <a class="active" href="/catagories"> <img src="/images/catagories.svg" alt=""> Catagories</a>
+        <% }
+        if(active !== 'catagories'){ %>
+            <a href="/catagories"> <img src="/images/catagories.svg" alt=""> Catagories</a>
+        <% }
+        if(isAdmin){
+            if(active === 'users'){ %>
+                <a class="active" href="/allAdmins"> <img src="/images/profile.svg" alt=""> Users</a>
+            <% }
+            if(active !== 'users'){ %>
+                <a href="/allAdmins"> <img src="/images/profile.svg" alt=""> Users</a>
+            <% }
+        }
+        if(!isAdmin){
+            if(active === 'cart'){ %>
+                <a class="active" href="/cart"> <img src="/images/cart.svg" alt=""> Cart</a>
+            <% }
+            if(active !== 'cart'){ %>
+                <a href="/cart"> <img src="/images/cart.svg" alt=""> Cart</a>
+            <% }
+        }
+        if(active === 'orders'){ %>
+            <a class="active" href="/order"> <img src="/images/catagories.svg" alt=""> Orders</a>
+        <% }
+        if(active !== 'orders'){ %>
+            <a href="/order"> <img src="/images/catagories.svg" alt=""> Orders</a>
+        <% }
+        if(active === 'profile'){ %>
+            <a class="active" href="/profile"> <img src="/images/profile.svg" alt=""> Profile</a>
+        <% }
+        if(active !== 'profile'){ %>
+            <a href="/profile"> <img src="/images/profile.svg" alt=""> Profile</a>
+        <% } %>
+
+    </div>
+    <% if(isSignedin){ %>
+        <a class="logout" href="/signout"><img src="/images/logout.svg" alt="">Sign out</a>
+      <% } %>
+      <% if(! isSignedin){ %>
+        <a class="logout" href="/signin"><img src="/images/logout.svg" alt="">Sign in</a>
+      <% } %>
+  </nav>
